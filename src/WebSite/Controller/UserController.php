@@ -24,8 +24,8 @@ class UserController {
      */
     public function listUserAction($request) {
         //Use Doctrine DBAL here
-
-        $users = ...
+        $request=$this->get('database_connection');
+        $users = $request->fetchAll('SELECT * FROM users');
 
         //you can return a Response object
         return [
