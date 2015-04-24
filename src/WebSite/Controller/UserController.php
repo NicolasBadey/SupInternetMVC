@@ -38,7 +38,7 @@ class UserController {
         $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
         // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
         // it's much better if you use QueryBuilder : http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/query-builder.html
-        $statement = $conn->prepare('SELECT * FROM user');
+        $statement = $conn->prepare('SELECT * FROM users');
         $statement->execute();
         $users = $statement->fetchAll();
 

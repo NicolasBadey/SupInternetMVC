@@ -1,5 +1,6 @@
 <?php
-
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Dumper;
 /**
  * This is you FrontController, the only point of access to your webapp
  */
@@ -14,7 +15,12 @@
  *
  *
  */
-$routes = ...
+
+
+$yaml = new Parser();
+
+$routes = $yaml->parse(file_get_contents('/../app/config/routing.yml');
+$yaml = Yaml::parse(file_get_contents('/../app/config/routing.yml'));
 
 //ControllerClassName, end name is ...Controller
 $controller_class = ... ;

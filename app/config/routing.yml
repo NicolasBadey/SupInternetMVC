@@ -1,2 +1,14 @@
-route_name:
-  controller: ControllerClassName:ActionName
+list_user:
+  controller: Controller\UserController:listUserAction
+
+list_user:
+  controller: Controller\UserController:showUserAction
+
+list_user:
+  controller: Controller\UserController:addUser
+
+list_user:
+  controller: Controller\UserController:deleteUser
+
+list_user:
+  controller: Controller\UserController:logUser
