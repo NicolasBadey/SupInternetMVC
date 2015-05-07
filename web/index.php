@@ -40,4 +40,4 @@ $response = $controller->$action_name($request);
 /**
  * Use Twig !
  */
-require $response['view'];
+require __DIR__ . '/../src/' . $response['view'];
