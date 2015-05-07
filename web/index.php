@@ -30,6 +30,7 @@ $controller = new $controller_class();
 //$Request can by an object
 $request['request'] = &$_POST;
 $request['query'] = &$_GET;
+$request['session'] = &$_SESSION;
 //...
 
 //$response can be an object
