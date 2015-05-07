@@ -36,6 +36,7 @@ $request['session'] = &$_SESSION;
 //$response can be an object
 $response = $controller->$action_name($request);
 
+/** do a redirection here if $response['redirect_to'] exists **/
 
 /**
  * Use Twig !
