@@ -1,4 +1,7 @@
 <?php
+
+namespace WebSite\Controller;
+/*include_once 'AbstractBaseController.php';*/
 /**
  * Created by PhpStorm.
  * User: nico
@@ -6,16 +9,70 @@
  * Time: 23:45
  */
 
-namespace Website\Controller;
+
 
 /**
  * Class UserController
  *
  * Controller of all User actions
  *
- * @package Website\Controller
+ * @package SupInternetMVC\Controller
  */
-class UserController {
+class UserController{
+
+
+    private $id;
+    private $name;
+    private $password;
+
+/*public function addUser($request) {
+
+        //Use Doctrine DBAL here
+        $config = new \Doctrine\DBAL\Configuration();
+        $connectionParams = array(
+            'dbname' => 'tweeter',
+            'user' => 'root',
+            'password' => '',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        );
+
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+
+        if ($request['request']) { //if POST
+            //handle form with DBAL
+            //...
+             $request= $conn->createQueryBuilder()
+                ->insert('users')
+                ->setValue('name',$name)
+                ->setValue('password',$password)
+                
+                ->setParameter(0, $name)
+                ->setParameter(1, $password);
+
+             
+/*                ->setParameter(0, $name)
+                ->setParameter(1, $password);*/
+
+/*
+
+                ->setParameters ['name' =>:name]
+                ->setParameters ['password' =>:password]*/
+
+
+            //Redirect to show
+            //you should return a RedirectResponse object
+/*                       return [
+                'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+
+            ];
+
+        }
+
+
+       }
+     */
 
     /**
      * Recup all users and print it
@@ -23,13 +80,14 @@ class UserController {
      * @return array
      */
     public function listUserAction($request) {
+
         //Use Doctrine DBAL here
         $config = new \Doctrine\DBAL\Configuration();
         //for this array use config_dev.yml and YamlComponents
         // http://symfony.com/fr/doc/current/components/yaml/introduction.html
         $connectionParams = array(
             'dbname' => 'tweeter',
-            'user' => 'users',
+            'user' => 'root',
             'password' => '',
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
@@ -38,14 +96,23 @@ class UserController {
         $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
         // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
         // it's much better if you use QueryBuilder : http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/query-builder.html
-        $statement = $conn->prepare('SELECT * FROM users');
-        $statement->execute();
-        $users = $statement->fetchAll();
+        
+        
+        $request= $conn->createQueryBuilder()
+                ->select('*')
+                ->from('users','u')
+                ->execute();
+
+
+        $user = $request->fetchAll();
+       
 
         //you can return a Response object
         return [
-            'view' => 'WebSite/View/user/listUser.html.php', // should be Twig : 'WebSite/View/user/listUser.html.twig'
-            'users' => $users
+            // je pars de l index et je retourne en arriere
+            'view' => '../src/WebSite/View/user/listUser.html.php', // should be Twig : 'SupInternetMVC/View/user/listUser.html.twig'
+            'users' => $user
+
         ];
     }
 
@@ -57,12 +124,30 @@ class UserController {
      */
     public function showUserAction($request) {
         //Use Doctrine DBAL here
+        //.....................................................................................................................
+        $config = new \Doctrine\DBAL\Configuration();
+        $connectionParams = array(
+            'dbname' => 'tweeter',
+            'user' => 'root',
+            'password' => '',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        );
 
-        $user = ...
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+      
+        $request= $conn->createQueryBuilder()
+                ->select('*')
+                ->from('users')
+                ->where('id= ?')
+                ->setParameter(0, $username);
+
+        $user=$request->fetch();
 
         //you can return a Response object
         return [
-            'view' => 'WebSite/View/user/showUser.html.php', // should be Twig : 'WebSite/View/user/listUser.html.twig'
+            'view' => '../View/user/showUser.html.php', // should be Twig : 'SupInternetMVC/View/user/listUser.html.twig'
             'user' => $user
         ];
     }
@@ -71,17 +156,42 @@ class UserController {
      * Add User and redirect on listUser after
      */
     public function addUser($request) {
-        //Use Doctrine DBAL here
 
+
+        //Use Doctrine DBAL here
+        $config = new \Doctrine\DBAL\Configuration();
+        $connectionParams = array(
+            'dbname' => 'tweeter',
+            'user' => 'root',
+            'password' => '',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        );
+
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+        $user = null;
 
         if ($request['request']) { //if POST
-            //handle form with DBAL
-            //...
+            $name=$_POST['name'];
+            $password=$_POST['password'];
+
+             $request= $conn->createQueryBuilder()
+                ->insert('users')
+                ->setValue('name',$name)
+                ->setValue('password',$password)
+                
+                ->setParameter(0, $name)
+                ->setParameter(1, $password);
+                $user=$request->execute();
+                
+/*                ->setParameters ['name' =>:name]
+                ->setParameters ['password' =>:password]
+*/
 
             //Redirect to show
             //you should return a RedirectResponse object
             return [
-                'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+                 'redirect_to' => 'http://index.php?p=add_user',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
 
             ];
         }
@@ -99,13 +209,31 @@ class UserController {
      * Delete User and redirect on listUser after
      */
     public function deleteUser($request) {
+
         //Use Doctrine DBAL here
+        $config = new \Doctrine\DBAL\Configuration();
+        $connectionParams = array(
+            'dbname' => 'tweeter',
+            'user' => 'root',
+            'password' => '',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        );
+
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+        $request= $conn->createQueryBuilder()
+                        ->delete('token_name(token)')
+                        ->from('users','u')
+                        ->where('name= ?')
+                        ->setParameter(0, $name)
+                        ->setParameter(1, $password);
 
 
 
         //you should return a RedirectResponse object , redirect to list
         return [
-            'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+            'redirect_to' => 'http://index.php?p=delete_user',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
 
         ];
     }
@@ -114,9 +242,30 @@ class UserController {
      * Log User (Session) , add session in $request first (index.php)
      */
     public function logUser($request) {
+        session_start();
         if ($request['request']) { //if POST
             //handle form with DBAL
             //...
+
+            $request= $conn->createQueryBuilder()
+                            ->select('name')
+                            ->from('users')
+                            ->where('name=?','password=?')
+                            ->setParameter(0, $name)
+                            ->setParameter(1, $password);
+
+            if('name=?'&&'password=?'){
+                echo 'you are connected';
+                $name=$_SESSION['name'];
+                $password=$_SESSION['password'];
+            }
+            elseif('name!=?'){
+                echo 'user not exist';
+            }
+            elseif('password?=?')
+            {
+                echo'password not matched';
+            }
 
 
         }
@@ -130,9 +279,18 @@ class UserController {
         //Redirect to list or home
         //you should return a RedirectResponse object
         return [
-            'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+            'redirect_to' => 'http://index.php?p=log_user'// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
 
         ];
 
     }
+    public function test($request){
+        echo'lol';
+    }
+
+     public function homeAction($request){
+        return ['view' => 'WebSite/View/user/homeAction.html.php'];
+
+    }
+
 }

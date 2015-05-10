@@ -1,5 +1,5 @@
 {
-  "name": "ProjectName",
+  "name": "SupInternetMVC",
   "description": "Your Project",
   "autoload": {
     "psr-0": {"": [

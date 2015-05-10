@@ -1,6 +1,6 @@
 <?php
 use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Dumper;
+
 /**
  * This is you FrontController, the only point of access to your webapp
  */
@@ -17,29 +17,43 @@ use Symfony\Component\Yaml\Dumper;
  */
 
 
+if(empty($_GET['p'])){
+	$page = 'home';
+}else{
+	$page = $_GET['p'];
+}
+echo $page;
 $yaml = new Parser();
 
-$routes = $yaml->parse(file_get_contents('/../app/config/routing.yml');
-$yaml = Yaml::parse(file_get_contents('/../app/config/routing.yml'));
+$routes = $yaml->parse(file_get_contents('../app/config/routing.yml'));
+$current_route = $routes[$page]['controller'];
 
+$current_route_array = explode(':',$current_route);
 //ControllerClassName, end name is ...Controller
-$controller_class = ... ;
+$controller_class = $current_route_array[0];
 
 //ActionName, end name is ...Action
-$action_name = ...;
-
+$action_name = $current_route_array[1];
+echo $controller_class;
 $controller = new $controller_class();
 
 //$Request can by an object
 $request['request'] = &$_POST;
 $request['query'] = &$_GET;
+$request['session']=&$_SESSION;
 //...
 
 //$response can be an object
 $response = $controller->$action_name($request);
 
 
+if (isset($response['redirect_to'])) {
+	header('Location: '.$response['redirect_to']);
+	exit;
+}
+
 /**
  * Use Twig !
  */
+/*require __DIR__ .'../../src/'.$response['view'];*/
 require $response['view'];

@@ -1,14 +1,20 @@
 list_user:
-  controller: Controller\UserController:listUserAction
+  controller: Website\Controller\UserController:listUserAction
 
-list_user:
-  controller: Controller\UserController:showUserAction
+show_user:
+  controller: Website\Controller\UserController:showUserAction
 
-list_user:
-  controller: Controller\UserController:addUser
+add_user:
+  controller: Website\Controller\UserController:addUser
 
-list_user:
-  controller: Controller\UserController:deleteUser
+delete_user:
+  controller: Website\Controller\UserController:deleteUser
 
-list_user:
-  controller: Controller\UserController:logUser
+log_user:
+  controller: Website\Controller\UserController:logUser
+
+test_user:
+  controller: Website\Controller\UserController:test
+
+home:
+  controller: Website\Controller\homeController:homeAction
