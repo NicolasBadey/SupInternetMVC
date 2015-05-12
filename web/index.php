@@ -63,6 +63,6 @@ if (!empty($response['redirect_to'])) {
     require __DIR__ . '/../src/' . $response['view'];
 } else {
 
-    throw new Exception('response object is not complet');
+    throw new Exception('your action "'.$page.'" do not return a correct response array, should have "view" or "redirect_to"');
 }
 

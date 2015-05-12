@@ -97,8 +97,7 @@ class UserController {
 
         //you should return a Response object
         return [
-            'view' => 'WebSite/View/user/addUser.html.php',// => create the file
-            'user' => $user
+            'view' => 'WebSite/View/user/addUser.html.php',// => you must create the file
         ];
     }
 
@@ -126,19 +125,24 @@ class UserController {
             //handle form with DBAL
             //...
 
+            //take FlashBag system from
+            // https://github.com/NicolasBadey/SupInternetTweeter/blob/master/model/functions.php
+            // line 87 : https://github.com/NicolasBadey/SupInternetTweeter/blob/master/index.php
+            // and manage error and success
 
+            //Redirect to list or home
+            //you should return a RedirectResponse object
+            return [
+                'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+
+            ];
         }
 
 
-        //take FlashBag system from
-        // https://github.com/NicolasBadey/SupInternetTweeter/blob/master/model/functions.php
-        // line 87 : https://github.com/NicolasBadey/SupInternetTweeter/blob/master/index.php
-        // and manage error and success
 
-        //Redirect to list or home
-        //you should return a RedirectResponse object
+
         return [
-            'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
+            'view' => '.......'
 
         ];
 
