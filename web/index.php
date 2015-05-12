@@ -4,8 +4,9 @@
  * This is you FrontController, the only point of access to your webapp
  */
  
- require __DIR__ . '/../vendor/autoload.php';
- 
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Use Yaml components for load a config routing, $routes is in yaml app/config/routing.yml :
@@ -14,16 +15,29 @@
  *
  *
  */
-$routes = ...
+$routes = Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
+if(isset($_GET['p'])){
+    $page = $_GET['p'];
+} else {
+    $page = 'home';
+}
 
-//Thaks to p=, find the current route
-$current_route = ...
+//check if controller config exits in routing.yml
+if (isset($routes[$page]['controller'])) {
+    $current_route = explode(':', $routes[$page]['controller']);
+} else {
+    throw new Exception('add routing config for '.$page.' in routing.yml');
+}
+
+
+
+
 
 //ControllerClassName, end name is ...Controller
-$controller_class = ... ;
+$controller_class = $current_route[0];
 
 //ActionName, end name is ...Action
-$action_name = ...;
+$action_name = $current_route[1];
 
 $controller = new $controller_class();
 
@@ -37,8 +51,18 @@ $request['session'] = &$_SESSION;
 $response = $controller->$action_name($request);
 
 /** do a redirection here if $response['redirect_to'] exists **/
+if (isset($response['redirect_to'])) {
 
-/**
- * Use Twig !
- */
-require __DIR__ . '/../src/' . $response['view'];
+    header('Location: ' . $response['redirect_to']);
+
+} elseif (isset($response['view'])) {
+
+    /**
+     * Use Twig !
+     */
+    require __DIR__ . '/../src/' . $response['view'];
+} else {
+
+    throw new Exception('response object is not complet');
+}
+
