@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  */
 $routes = Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
-if(isset($_GET['p'])){
+if(!empty($_GET['p'])){
     $page = $_GET['p'];
 } else {
     $page = 'home';
