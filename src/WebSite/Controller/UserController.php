@@ -109,7 +109,7 @@ class UserController {
         //Use Doctrine DBAL here
 
 
-
+        // you can use FlashBag
         //you should return a RedirectResponse object , redirect to list
         return [
             'redirect_to' => 'http://.......',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
@@ -142,7 +142,7 @@ class UserController {
 
 
         return [
-            'view' => '.......'
+            'view' => 'WebSite/View/user/login.html.php'
 
         ];
 
