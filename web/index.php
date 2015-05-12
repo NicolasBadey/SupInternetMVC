@@ -19,7 +19,7 @@ $routes = Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
 if(!empty($_GET['p'])){
     $page = $_GET['p'];
 } else {
-    $page = 'home';
+    $page = 'home'; //put your default route name here, can be user_list
 }
 
 //check if controller config exits in routing.yml
@@ -45,7 +45,7 @@ $controller = new $controller_class();
 $request['request'] = &$_POST;
 $request['query'] = &$_GET;
 $request['session'] = &$_SESSION;
-//...
+
 
 //$response can be an object
 $response = $controller->$action_name($request);
