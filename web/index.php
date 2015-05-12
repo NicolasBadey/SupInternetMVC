@@ -23,7 +23,7 @@ if(isset($_GET['p'])){
 }
 
 //check if controller config exits in routing.yml
-if (isset($routes[$page]['controller'])) {
+if (!empty($routes[$page]['controller'])) {
     $current_route = explode(':', $routes[$page]['controller']);
 } else {
     throw new Exception('add routing config for '.$page.' in routing.yml');
@@ -51,11 +51,11 @@ $request['session'] = &$_SESSION;
 $response = $controller->$action_name($request);
 
 /** do a redirection here if $response['redirect_to'] exists **/
-if (isset($response['redirect_to'])) {
+if (!empty($response['redirect_to'])) {
 
     header('Location: ' . $response['redirect_to']);
 
-} elseif (isset($response['view'])) {
+} elseif (!empty($response['view'])) {
 
     /**
      * Use Twig !
