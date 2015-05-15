@@ -1,22 +1,12 @@
 <?php
 
 namespace WebSite\Controller;
-class homeController{
+
+class homeController extends AbstractBaseController{
 public function listUserAction($request) {
 
         //Use Doctrine DBAL here
-        $config = new \Doctrine\DBAL\Configuration();
-        //for this array use config_dev.yml and YamlComponents
-        // http://symfony.com/fr/doc/current/components/yaml/introduction.html
-        $connectionParams = array(
-            'dbname' => 'tweeter',
-            'user' => 'root',
-            'password' => '',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        );
-        
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+       
         // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
         // it's much better if you use QueryBuilder : http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/query-builder.html
         
@@ -28,6 +18,8 @@ public function listUserAction($request) {
 
 
         $user = $request->fetchAll();
+
+        $conn = $this->getConnection();
        
 
         //you can return a Response object

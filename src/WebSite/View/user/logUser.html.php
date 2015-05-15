@@ -14,9 +14,6 @@
 </form>
 
 <a href='addUser.html.php'>inscrire</a>
-<?php
-echo'lo';
-?>
 
 
 

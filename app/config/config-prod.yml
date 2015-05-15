@@ -1,6 +1,6 @@
 doctrine:
   host: localhost
-  database: tweeter
-  username: root
+  dbname: tweeter
+  user: root
   password:
   driver: pdo_mysql

@@ -8,8 +8,8 @@
     <body>
 
 <form method="post" action="">
-  <input type="text" name="name" />pseudo</input>
-  <input type="password" name="password" />password</input>
+  pseudo<input type="text" name="name" /></input>
+  password<input type="password" name="password" /></input>
   <input type="submit" value="Envoyer" />
 </form>
 
