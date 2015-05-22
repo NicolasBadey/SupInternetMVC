@@ -6,8 +6,8 @@
     </head>
 
     <body>
-	<?php
-	    if (isset($_SESSION['flashBag'])) {
+    	<?php
+    if (isset($_SESSION['flashBag'])) {
         foreach ($_SESSION['flashBag'] as $type => $flash) {
             foreach ($flash as $key => $message) {
                 echo '<div class="'.$type.'" role="'.$type.'" >'.$message.'</div>';
@@ -17,8 +17,15 @@
         }
     }
 
-	?>
-	<a href='?p=logout_user'> deconnecter</a> 
+?>
+
+
+vous êtes déconnecter
+
+<a href='?p=add_user'>inscrire</a>
+<a href='?p=log_user'>login</a>
+
+
 
 
 

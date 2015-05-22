@@ -13,8 +13,13 @@ delete_user:
 log_user:
   controller: Website\Controller\UserController:logUser
 
+
+logout_user:
+  controller: Website\Controller\UserController:logOut
+
 test_user:
   controller: Website\Controller\UserController:test
+
 
 home:
   controller: Website\Controller\homeController:homeAction
