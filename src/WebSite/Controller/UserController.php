@@ -107,6 +107,7 @@ class UserController extends AbstractBaseController{
             $conn->insert('users', 
                 array('name' => $name,
                     'password'=>$password,
+                    'role'=> 'user',
                 ));
 
                 $this->addMessageFlash('success', 'inscription réussie !');
@@ -137,21 +138,21 @@ class UserController extends AbstractBaseController{
      * Delete User and redirect on listUser after
      */
     public function deleteUser($request) {
+        session_start();
+
+        //secu
+        if (empty($_SESSION['user'] || 
+            $_SESSION['user']['role'] != 'admin')) {
+            throw new \Exception("interdit");
+        exit;
+            
+        }
+
 
          $conn = $this->getConnection();
-          if ($request['request']) {
 
-            $qb= $conn->createQueryBuilder()
-
-
-                            ->delete('*')
-                            ->from('users','u')
-                            ->where('u.id = ?')
-                            ->setParameter(0, $request['request']['name'])
-                            ->setParameter(1, $request['request']['password']);
-
-
-            $qb->execute();
+          if (!empty($request['query']['id'])) {
+            $conn->delete('users',['id'=>$request['query']['id']]);
 
         }
         return [
@@ -184,20 +185,35 @@ class UserController extends AbstractBaseController{
             $nb_user = (int) $qb->execute()->fetchColumn();
                 if($nb_user ==1){
 
-                    $_SESSION['name'] = $name;
-                    $_SESSION['password']=$password;
+                $qb= $conn->createQueryBuilder()
+                ->select('*')
+                ->from('users','u')
+                ->where ('u.name = :name','u.password = :password')
+                ->setParameter('name', $request['request']['name'])
+                ->setParameter('password', $request['request']['password']);
+
+                $user=$qb->execute()->fetch();
+
+                if (!$user) {
+                    throw new \Exception('user cannot be null');
+                }
+
+                   
+                $_SESSION['user'] = $user;
                     
                       return [
                  'redirect_to' => 'index.php',// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
 
             ];
                 }
+                
 
              }
-
+         
         }
+        $this->addMessageFlash('error','non connecter, verifiez vos champs');
     }
-            $this->addMessageFlash('error','non connecter');
+           
                 return [
             'view' => 'WebSite/View/user/logUser.html.php'// => manage it in index.php !! URL should be generate by Routing functions thanks to routing config
 
@@ -206,11 +222,27 @@ class UserController extends AbstractBaseController{
 }
     public function logOut(){
 
-         $conn = $this->getConnection();
-
-        session_start();
-        session_unset();
-        session_destroy();
+// Initialisation de la session.
+// Si vous utilisez un autre nom
+// session_name("autrenom")
+session_start();
+ 
+// Détruit toutes les variables de session
+$_SESSION = array();
+ 
+// Si vous voulez détruire complètement la session, effacez également
+// le cookie de session.
+// Note : cela détruira la session et pas seulement les données de session !
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+ 
+// Finalement, on détruit la session.
+session_destroy();
 
         return ['view' => 'WebSite/View/user/logOut.html.php'];
 

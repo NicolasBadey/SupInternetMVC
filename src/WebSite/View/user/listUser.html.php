@@ -26,8 +26,9 @@ $bdd = new PDO('mysql:dbname=tweeter;host=localhost','root','');
 	while($donnees=$res->fetch()){
 		echo'Les users inscrit sont : ';
 		echo $donnees['name'];
-		echo'<a href="deleteUser.html.php">'.'<img src="delete.png"   height="40" width="40">'.'<br>';
+		echo'<a href="?p=delete_user&id='.$donnees['id'].'"><img src="delete.png"   height="40" width="40"></a><br>';
 	}
+
 
 
 /*
